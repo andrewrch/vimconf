@@ -1,41 +1,49 @@
     set nocompatible
     let mapleader=","
     " pathogen stuff
-   " execute pathogen#infect()
-   " call pathogen#helptags()
-   " call pathogen#incubate()
-   filetype off                  " required!
+    " execute pathogen#infect()
+    " call pathogen#helptags()
+    " call pathogen#incubate()
+    filetype off                  " required!
 
-   set rtp+=~/.vim/bundle/vundle/
-   call vundle#rc()
+    set rtp+=~/.vim/bundle/vundle/
+    call vundle#rc()
 
-   " let Vundle manage Vundle
-   " required! 
-   Bundle 'gmarik/vundle'
+    set encoding=utf-8
 
-   " Bundles
-   Bundle 'vim-scripts/Align'
-   Bundle 'Raimondi/delimitMate'
-   Bundle 'tpope/vim-ragtag'
-   Bundle 'Lokaltog/vim-powerline'
-   Bundle 'airblade/vim-rooter'
-   Bundle 'tpope/vim-surround'
-   Bundle 'scrooloose/syntastic'
-   Bundle 'tpope/vim-commentary'
-   Bundle 'kien/ctrlp.vim'
-   Bundle 'ervandew/supertab'
-   Bundle 'git://git.wincent.com/command-t.git'
-   Bundle 'tpope/vim-sensible.git'
-   
-   " Syntax plugins
-   Bundle 'petRUShka/vim-opencl'
-   Bundle 'beyondmarc/glsl.vim'
-   Bundle 'hail2u/vim-css3-syntax'
-   Bundle 'othree/html5-syntax.vim'
-   Bundle 'tpope/vim-markdown'
-   Bundle 'jelera/vim-javascript-syntax'
-   Bundle 'tpope/vim-haml'
-   Bundle 'jQuery'
+    " let Vundle manage Vundle
+    " required! 
+    Bundle 'gmarik/vundle'
+
+    " Bundles
+    Bundle 'vim-scripts/Align'
+    Bundle 'Raimondi/delimitMate'
+    Bundle 'tpope/vim-ragtag'
+    Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+    Bundle 'Lokaltog/powerline-fonts'
+    Bundle 'airblade/vim-rooter'
+    Bundle 'tpope/vim-surround'
+    Bundle 'scrooloose/syntastic'
+    Bundle 'tpope/vim-commentary'
+    Bundle 'kien/ctrlp.vim'
+    " Trying YouCompleteMe Bundle 'ervandew/supertab'
+    Bundle 'Valloric/YouCompleteMe'
+    " Using ctrl-p instead Bundle 'git://git.wincent.com/command-t.git'
+    Bundle 'tpope/vim-sensible.git'
+
+    " Syntax plugins
+    Bundle 'petRUShka/vim-opencl'
+    Bundle 'beyondmarc/glsl.vim'
+    Bundle 'hail2u/vim-css3-syntax'
+    Bundle 'othree/html5-syntax.vim'
+    Bundle 'tpope/vim-markdown'
+    Bundle 'jelera/vim-javascript-syntax'
+    Bundle 'tpope/vim-haml'
+    Bundle 'jQuery'
+    Bundle 'derekwyatt/vim-scala'
+
+    "Colours
+    Bundle 'jnurmine/Zenburn'
 
     " Enable syntax highlighting
     syntax on
@@ -44,6 +52,7 @@
     " Tell vim to hide buffers
     set hidden
 
+    set ambiwidth=single
     set nowrap        " don't wrap lines
     set expandtab
     set tabstop=2     " a tab is two spaces
@@ -110,7 +119,6 @@
     nmap <silent> ,/ :nohlsearch<CR>
 
     " This is a doosy
-
     cmap w!! w !sudo tee % >/dev/null
 
     " For pasting in lots of stuff from tinternet
@@ -122,12 +130,14 @@
 
     set t_Co=256
     colorscheme zenburn
+    let g:Powerline_symbols = 'fancy'
 
 "=====[ Remove all the rubbish from gvim]====================================
 
     set guioptions-=m  "remove menu bar
     set guioptions-=T  "remove toolbar
     set guioptions-=r  "remove right-hand scroll bar
+    set guifont=Terminess\ Powerline
 
 "=====[ Highlight matches when jumping to next ]=============
 
@@ -215,31 +225,4 @@
 
     inoremap <expr>  <C-K>   BDG_GetDigraph() 
 
-"====[ GLSL shaders ]=======================================================
-"
-command SetGLSLFileType call SetGLSLFileType()
-function SetGLSLFileType()
-  for item in getline(1,10)
-    if item =~ "#version 330"
-      execute ':set filetype=glsl330'
-      break
-    endif
-    if item =~ "#version 400"
-      execute ':set filetype=glsl400'
-      break
-    endif
-    if item =~ "#version 410"
-      execute ':set filetype=glsl410'
-      break
-    endif
-    if item =~ "#version 420"
-      execute ':set filetype=glsl420'
-      break
-    endif
-    if item =~ "#version 430"
-      execute ':set filetype=glsl430'
-      break
-    endif
-  endfor
-endfunction
 au BufNewFile,BufRead *.glslf,*.glslv,*.frag,*.vert,*.glsl SetGLSLFileType
