@@ -48,6 +48,10 @@ After pulling in all of the bundles, we have to compile it using
     
 This will automatically download clang and do some magic to enable syntax checking while you code.
 
+Note that it has a dependancy on python libs, so install the python-dev package
+
+    sudo apt-get update && sudo apt-get install python-dev
+
 Other plugins
 -------------
 
