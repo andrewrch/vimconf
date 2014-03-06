@@ -25,6 +25,7 @@
     Bundle 'tpope/vim-surround'
     Bundle 'scrooloose/syntastic'
     Bundle 'tpope/vim-commentary'
+    Bundle 'SirVer/ultisnips'
     Bundle 'kien/ctrlp.vim'
     " Trying YouCompleteMe Bundle 'ervandew/supertab'
     Bundle 'Valloric/YouCompleteMe'
@@ -41,6 +42,7 @@
     Bundle 'tpope/vim-haml'
     Bundle 'jQuery'
     Bundle 'derekwyatt/vim-scala'
+
 
     "Colours
     Bundle 'jnurmine/Zenburn'
@@ -82,9 +84,8 @@
     set noerrorbells         " don't beep
 
     " Just the 81st column of wide lines...
-    highlight ColorColumn ctermbg=magenta
-    call matchadd('ColorColumn', '\%79v', 100)
-
+    highlight WhiteOnRed ctermfg=white ctermbg=red
+    call matchadd('WhiteOnRed', '\%79v', 100)
 
     set formatoptions+=w
     set tw=80
@@ -105,9 +106,6 @@
     nnoremap j gj
     nnoremap k gk
     nnoremap Q <nop>
-
-    " Remap command-t flush to F5
-    noremap <F5> :CommandTFlush<CR>
 
     " Easy window navigation
     map <C-h> <C-w>h
@@ -132,16 +130,30 @@
     colorscheme zenburn
     let g:Powerline_symbols = 'fancy'
 
+"=====[YouCompleteMe Options]===============================================
+
+    let g:ycm_collect_identifiers_from_tags_files = 1
+    let g:ycm_extra_conf_globlist = ['~/code/*','!~/*']
+
+"=====[UltiSnips Options]===============================================
+    let g:UltiSnipsExpandTrigger = '<c-l>'
+    let g:UltiSnipsJumpForwardTrigger = '<c-j>'
+    let g:UltiSnipsJumpBackwardTrigger = '<c-k>'
+    "let g:UltiSnipsListSnippets = '<c-m>'
+
+"=====[CtrlP Options]===============================================
+    set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+    nnoremap <silent> <Leader>t :CtrlP<cr>
+    nnoremap <silent> <leader>T :ClearCtrlPCache<cr>\|:CtrlP<cr>
+
 "=====[ Remove all the rubbish from gvim]====================================
 
     set guioptions-=m  "remove menu bar
     set guioptions-=T  "remove toolbar
     set guioptions-=r  "remove right-hand scroll bar
-    set guifont=Terminess\ Powerline
+    set guifont=Terminess\ Powerline "Set the GVIM font to terminus
 
 "=====[ Highlight matches when jumping to next ]=============
-
-    highlight WhiteOnRed ctermfg=white ctermbg=red
 
     " This rewires n and N to do the highlighing...
     nnoremap <silent> n   n:call HLNext(0.4)<cr>
@@ -154,7 +166,7 @@
         let target_pat = '\c\%#'.@/
         let ring = matchadd('WhiteOnRed', target_pat, 101)
         redraw
-        "exec 'sleep ' . float2nr(a:blinktime * 1000) . 'm'
+        exec 'sleep ' . float2nr(a:blinktime * 500) . 'm'
         call matchdelete(ring)
         redraw
     endfunction
@@ -223,6 +235,6 @@
 
 "====[ Make CTRL-K list diagraphs before each digraph entry ]===============
 
-    inoremap <expr>  <C-K>   BDG_GetDigraph() 
+    inoremap <expr>  <c-n>   BDG_GetDigraph() 
 
 au BufNewFile,BufRead *.glslf,*.glslv,*.frag,*.vert,*.glsl SetGLSLFileType
