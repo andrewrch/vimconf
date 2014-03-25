@@ -142,7 +142,10 @@
     "let g:UltiSnipsListSnippets = '<c-m>'
 
 "=====[CtrlP Options]===============================================
-    set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+    let g:ctrlp_custom_ignore = {
+      \ 'dir':   '\v(\.(git|hg|svn)$|build$)',
+      \ 'file':  '\v\.(so|swp|zip)$',
+      \ }
     nnoremap <silent> <Leader>t :CtrlP<cr>
     nnoremap <silent> <leader>T :ClearCtrlPCache<cr>\|:CtrlP<cr>
 
