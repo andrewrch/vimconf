@@ -27,10 +27,10 @@
     Bundle 'tpope/vim-commentary'
     Bundle 'SirVer/ultisnips'
     Bundle 'kien/ctrlp.vim'
-    " Trying YouCompleteMe Bundle 'ervandew/supertab'
     Bundle 'Valloric/YouCompleteMe'
-    " Using ctrl-p instead Bundle 'git://git.wincent.com/command-t.git'
     Bundle 'tpope/vim-sensible.git'
+    Bundle 'majutsushi/tagbar'
+    Bundle 'tpope/vim-fugitive'
 
     " Syntax plugins
     Bundle 'petRUShka/vim-opencl'
@@ -130,24 +130,28 @@
     colorscheme zenburn
     let g:Powerline_symbols = 'fancy'
 
-"=====[YouCompleteMe Options]===============================================
+"=====[ YouCompleteMe Options ]===============================================
 
     let g:ycm_collect_identifiers_from_tags_files = 1
     let g:ycm_extra_conf_globlist = ['~/code/*','!~/*']
 
-"=====[UltiSnips Options]===============================================
+"=====[ UltiSnips Options ]===============================================
     let g:UltiSnipsExpandTrigger = '<c-l>'
     let g:UltiSnipsJumpForwardTrigger = '<c-j>'
     let g:UltiSnipsJumpBackwardTrigger = '<c-k>'
     "let g:UltiSnipsListSnippets = '<c-m>'
 
-"=====[CtrlP Options]===============================================
+"=====[ CtrlP Options ]===============================================
     let g:ctrlp_custom_ignore = {
       \ 'dir':   '\v(\.(git|hg|svn)$|build$)',
       \ 'file':  '\v\.(so|swp|zip)$',
       \ }
     nnoremap <silent> <Leader>t :CtrlP<cr>
     nnoremap <silent> <leader>T :ClearCtrlPCache<cr>\|:CtrlP<cr>
+    nnoremap <leader>. :CtrlPTag<cr>
+
+"=====[ Tagbar ]====================================
+    nnoremap <silent> <Leader>b :TagbarToggle<CR>
 
 "=====[ Remove all the rubbish from gvim]====================================
 
