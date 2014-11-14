@@ -134,6 +134,7 @@
 
     let g:ycm_collect_identifiers_from_tags_files = 1
     let g:ycm_extra_conf_globlist = ['~/code/*','!~/*']
+    let g:ycm_autoclose_preview_window_after_insertion = 1
 
 "=====[ UltiSnips Options ]===============================================
     let g:UltiSnipsExpandTrigger = '<c-l>'
@@ -143,7 +144,7 @@
 
 "=====[ CtrlP Options ]===============================================
     let g:ctrlp_custom_ignore = {
-      \ 'dir':   '\v(\.(git|hg|svn)$|build$)',
+      \ 'dir':   '\v(\.(git|hg|svn)$|build$|debug$|release$)',
       \ 'file':  '\v\.(so|swp|zip)$',
       \ }
     nnoremap <silent> <Leader>t :CtrlP<cr>
