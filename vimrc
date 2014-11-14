@@ -18,6 +18,7 @@
     " Bundles
     Bundle 'vim-scripts/Align'
     Bundle 'Raimondi/delimitMate'
+    Bundle 'git://git.code.sf.net/p/vim-latex/vim-latex'
     Bundle 'tpope/vim-ragtag'
     Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
     Bundle 'Lokaltog/powerline-fonts'
