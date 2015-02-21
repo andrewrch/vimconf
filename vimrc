@@ -78,7 +78,7 @@ set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg,*.svg
 set wildignore+=build/*,tmp/*,vendor/cache/*,bin/*,debug/*,release/*
 set wildignore+=.ycm_extra_conf.*
 
-"=====[ Highlight matches when jumping to next ]=============
+"=====[ Highlight matches when jumping to next ]==============================
 
 " This rewires n and N to do the highlighing...
 nnoremap <silent> n   n:call HLNext(0.4)<cr>
@@ -87,14 +87,14 @@ nnoremap <silent> N   N:call HLNext(0.4)<cr>
 " Just highlight the match in red...
 highlight WhiteOnRed ctermfg=white ctermbg=red
 function! HLNext (blinktime)
-    let [bufnum, lnum, col, off] = getpos('.')
-    let matchlen = strlen(matchstr(strpart(getline('.'),col-1),@/))
-    let target_pat = '\c\%#'.@/
-    let ring = matchadd('WhiteOnRed', target_pat, 101)
-    redraw
-    exec 'sleep ' . float2nr(a:blinktime * 500) . 'm'
-    call matchdelete(ring)
-    redraw
+  let [bufnum, lnum, col, off] = getpos('.')
+  let matchlen = strlen(matchstr(strpart(getline('.'),col-1),@/))
+  let target_pat = '\c\%#'.@/
+  let ring = matchadd('WhiteOnRed', target_pat, 101)
+  redraw
+  exec 'sleep ' . float2nr(a:blinktime * 500) . 'm'
+  call matchdelete(ring)
+  redraw
 endfunction
 
 "====[ Make tabs, trailing whitespace, and non-breaking spaces visible ]======
@@ -106,22 +106,22 @@ set list
 
 filetype on
 augroup PatchDiffHighlight
-    autocmd!
-    autocmd FileType  diff   syntax enable
+  autocmd!
+  autocmd FileType  diff   syntax enable
 augroup END
 
 "====[ Open any file with a pre-existing swapfile in readonly mode "]=========
 
 augroup NoSimultaneousEdits
-    autocmd!
-    autocmd SwapExists * let v:swapchoice = 'o'
-    autocmd SwapExists * echomsg ErrorMsg
-    autocmd SwapExists * echo 'Duplicate edit session (readonly)'
-    autocmd SwapExists * echohl None
-    autocmd SwapExists * sleep 2
+  autocmd!
+  autocmd SwapExists * let v:swapchoice = 'o'
+  autocmd SwapExists * echomsg ErrorMsg
+  autocmd SwapExists * echo 'Duplicate edit session (readonly)'
+  autocmd SwapExists * echohl None
+  autocmd SwapExists * sleep 2
 augroup END
 
-"====[ Vundle! ]===========================
+"====[ Vundle! ]==============================================================
 filetype off
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
@@ -136,8 +136,9 @@ Plugin 'Shougo/unite.vim'
 Plugin 'Shougo/vimproc.vim'
 "Plugin 'vim-scripts/Align'
 Plugin 'Raimondi/delimitMate'
-Plugin 'jalcine/cmake.vim'
+"Plugin 'jalcine/cmake.vim'
 Plugin 'tpope/vim-ragtag'
+Plugin 'mbbill/undotree'
 Plugin 'airblade/vim-rooter'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-endwise'
@@ -147,11 +148,16 @@ Plugin 'mhinz/vim-signify'
 Plugin 'ervandew/supertab'
 Plugin 'tpope/vim-sensible.git'
 "Plugin 'godlygeek/tabular'
+Plugin 'tmux-plugins/vim-tmux'
+Plugin 'wellle/tmux-complete.vim'
 Plugin 'xolox/vim-session'
+Plugin 'Chiel92/vim-autoformat'
+Plugin 'mhinz/vim-startify'
 
 " unite add ons
 Plugin 'tsukkee/unite-tag'
 Plugin 'yuku-t/unite-git'
+"Plugin 'h1mesuke/unite-outline'
 
 " editor add ons
 Plugin 'scrooloose/nerdcommenter'
@@ -169,6 +175,7 @@ Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 " Plugin 'kien/ctrlp.vim'
 Plugin 'Valloric/YouCompleteMe'
+"Plugin 'Yggdroot/indentLine'
 
 " version control
 Plugin 'tpope/vim-fugitive'
@@ -181,7 +188,6 @@ Plugin 'petRUShka/vim-opencl'
 Plugin 'beyondmarc/glsl.vim'
 Plugin 'hail2u/vim-css3-syntax'
 Plugin 'othree/html5-syntax.vim'
-Plugin 'tpope/vim-markdown'
 Plugin 'jelera/vim-javascript-syntax'
 Plugin 'tpope/vim-haml'
 Plugin 'jQuery'
@@ -190,7 +196,6 @@ Plugin 'dbakker/vim-lint'
 
 "Colours
 Plugin 'jnurmine/Zenburn'
-Plugin 'Yggdroot/indentLine'
 
 colorscheme zenburn
 " Enable syntax highlighting
@@ -198,63 +203,64 @@ syntax on
 "And indenting
 filetype plugin indent on
 
-" Unite functions
+" Unite
+let g:unite_source_history_yank_enable = 1
+let g:unite_data_directory='~/.vim/unite'
+"let g:unite_enable_start_insert = 1
+let g:unite_prompt='» '
+let g:unite_source_rec_max_cache_files=5000
+let g:unite_split_rule = "botright"
+let g:unite_winheight = 10
+let g:unite_force_overwrite_statusline = 0
+let g:unite_candidate_icon = '-'
+let g:unite_cursor_line_highlight = 'WhiteOnRed'
+let g:unite_marked_icon = '+'
+
+let s:unite_ignores = [
+      \ '\.git', 'deploy', 'dist', '\.ycm_extra_conf.py',
+      \ '\.ycm_extra_conf.pyc',
+      \ 'undo', 'tmp', 'backups',
+      \ 'generated', '/build/', 'release', 'debug', 'images']
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#custom#source('file_rec,file_rec/async,file_mru,file,buffer,grep,tag',
+      \ 'ignore_pattern', unite#get_all_sources('file_rec')['ignore_pattern'] .
+      \ join(s:unite_ignores, '\|'))
 
 func! s:call_unite(sources)
-"exec(':Unite -no-split -direction=botright -unique -truncate -sync ' . a:sources)
-exec(':Unite -direction=botright -unique -truncate -sync ' . a:sources)
+  ""exec(':Unite -direction=botright -unique -truncate -sync ' . a:sources)
+  exec(':Unite -toggle -auto-resize -buffer-name='. a:sources)
 endfunc
 
-func! s:call_unite_tasks()
-  call s:call_unite('grep:.:-s:\(TODO\|todo\|NOTE\|note\|' .
-\ 'FIXME\|fixme\|BUG\|bug)')
-endfunc
+nnoremap <leader>fv :<C-u>Unite -default-action=vsplit -buffer-name=files -truncate -start-insert file_rec/async:!<cr>
+nnoremap <leader>fs :<C-u>Unite -default-action=split -buffer-name=files -truncate -start-insert file_rec/async:!<cr>
+nnoremap <leader>f. :<C-u>Unite -buffer-name=files -truncate -start-insert file_rec/async:!<cr>
+nnoremap <leader>F :<C-u>Unite -buffer-name=files -start-insert file<cr>
+nnoremap <leader>r :<C-u>Unite -buffer-name=mru -start-insert file_mru<cr>
+nnoremap <leader>y :<C-u>Unite -buffer-name=yank history/yank<cr>
+nnoremap <leader>ev :<C-u>Unite -default-action=vsplit -buffer-name=buffer buffer<cr>
+nnoremap <leader>es :<C-u>Unite -default-action=split -buffer-name=buffer buffer<cr>
+nnoremap <leader>e. :<C-u>Unite -buffer-name=buffer buffer<cr>
 
-func! s:call_unite_tmux()
-call s:call_unite('tmux/panes tmux/sessions tmux/windows ' .
-\ 'tmuxcomplete/lines')
-endfunc
-func! s:call_unite_tags()
-  call s:call_unite('tag tag/include')
-endfunc
-func! s:call_unite_buffer()
-  call s:call_unite('buffer')
-endfunc
-func! s:call_unite_files()
-  return s:call_unite('file_rec/async:!:$PWD file_rec/git:!')
-endfunc
-func! s:call_unite_local_grep()
-  return s:call_unite('grep:.:-R')
-endfunc
-func! s:call_unite_resume()
-  return s:call_unite('resume')
-endfunc
+" Custom mappings for the unite buffer
+autocmd FileType unite call s:unite_settings()
+function! s:unite_settings()
+  " Play nice with supertab
+  let b:SuperTabDisabled=1
+  " Enable navigation with control-j and control-k in insert mode
+  imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+  imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+endfunction
 
-" Define a base mapping for Unite.
-nnoremap [unite] <nop>
-nmap <leader>u [unite]
-" Define the mappings.
-nnoremap <silent> [unite]b :call <SID>call_unite_buffer()<cr>
-nnoremap <silent> [unite]f :call <SID>call_unite_files()<cr>
-nnoremap <silent> [unite]g :call <SID>call_unite_local_grep()<cr>
-nnoremap <silent> [unite]t :call <SID>call_unite_tags()<cr>
-"nnoremap <silent> [unite]t :call <SID>call_unite_tasks()<cr>
-nnoremap <silent> [unite]x :call <SID>call_unite_tmux()<cr>
-nnoremap <silent> [unite]r :call <SID>call_unite_resume()<cr>
-nnoremap <silent> [unite]X :call <Plug>unite_disable_max_candidates()<CR>
-" For those who end up using my machine but think it has CtrlP.
-nnoremap <silent> <leader>p [unite]f
-" }}}
 " {{{ Git helpers
-nnoremap <leader>ga :Git add<space>
-nnoremap <leader>gab :Git add %<cr>
-nnoremap <leader>gc :Git commit<space>
-nnoremap <leader>gco :Git checkout<space>
-nnoremap <leader>gf :Git fetch<space>
-nnoremap <leader>gfa :Git fetch --all<CR>
-nnoremap <leader>gp :Git push<space>
-nnoremap <leader>grm :Git rm %<CR>
-nnoremap <leader>grmc :Git rm --cached %<CR>
+"nnoremap <leader>ga :Git add<space>
+"nnoremap <leader>gab :Git add %<cr>
+"nnoremap <leader>gc :Git commit<space>
+"nnoremap <leader>gco :Git checkout<space>
+"nnoremap <leader>gf :Git fetch<space>
+"nnoremap <leader>gfa :Git fetch --all<CR>
+"nnoremap <leader>gp :Git push<space>
+"nnoremap <leader>grm :Git rm %<CR>
+"nnoremap <leader>grmc :Git rm --cached %<CR>
 " }}}
 
 if (exists('unite#set_profile'))
@@ -279,41 +285,50 @@ endif
 "endif
 
 "=====[ c/c++ Options ]===============================================
-    let g:load_doxygen_syntax=1
-    let g:doxygen_enhanced_color=1
-    let g:c_comment_strings=1
-    let g:c_curly_errors=1
-    let g:c_gnu=0
-    let g:c_no_c99=1
-    let g:c_space_errors=1
+let g:load_doxygen_syntax=1
+"    let g:doxygen_enhanced_color=1
+let g:c_comment_strings=1
+let g:c_curly_errors=1
+let g:c_gnu=0
+let g:c_no_c99=1
+let g:c_space_errors=1
+
+"=====[ cmake Options ]===============================================
+let g:cmake_build_dirs = [ "build" ]
+let g:cmake_build_type = "Debug"
+
+"=====[ Startify Options ]===============================================
+
 
 "=====[ Airline Options ]===============================================
-    let g:airline_theme='base16'
-    let g:airline_detected_modified=1
-    let g:airline_powerline_fonts=1
-    let g:airline_detect_iminsert=1
-    let g:airline#extensions#hunks#non_zero_only=1
-    let g:airline#extensions#tabline#enabled=1
-    let g:airline#extensions#branch#enabled=1
-    let g:airline#extensions#whitespace#enabled=1
-    let g:airline#extensions#whitespace#mixed_indent_algo=1
-    let g:airline#extensions#whitespace#show_message=1
-    let g:airline#extensions#whitespace#trailing_format='s [%s]'
-    let g:airline#extensions#whitespace#mixed_indent_format='i [%s]'
-    let g:airline_mode_map={
-    \ '__' : '-',
-    \ 'n' : 'N',
-    \ 'i' : 'I',
-    \ 'R' : 'R',
-    \ 'v' : 'V',
-    \ 'V' : 'B'
-    \ }
+let g:airline_theme='zenburn'
+let g:airline_detected_modified=1
+let g:airline_powerline_fonts=1
+let g:airline_detect_iminsert=1
+let g:airline#extensions#hunks#non_zero_only=1
+let g:airline#extensions#tabline#enabled=1
+let g:airline#extensions#branch#enabled=1
+let g:airline#extensions#whitespace#enabled=1
+let g:airline#extensions#whitespace#mixed_indent_algo=1
+let g:airline#extensions#whitespace#show_message=1
+let g:airline#extensions#whitespace#trailing_format='s [%s]'
+let g:airline#extensions#whitespace#mixed_indent_format='i [%s]'
+let g:airline_mode_map={
+      \ '__' : '-',
+      \ 'n' : 'N',
+      \ 'i' : 'I',
+      \ 'R' : 'R',
+      \ 'v' : 'V',
+      \ 'V' : 'B'
+      \ }
 
 "=====[ Powerline Options ]===============================================
 let g:Powerline_symbols = 'fancy'
 
 "=====[ YouCompleteMe Options ]===============================================
-
+"
+nnoremap <F6> :YcmRestartServer <cr> " <bar> :sleep 1 <bar> :YcmForceCompileAndDiagnostics <cr><bar><cr>
+nnoremap <F5> :YcmForceCompileAndDiagnostics<CR><CR>
 let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_extra_conf_globlist = ['~/code/*','!~/*']
 let g:ycm_autoclose_preview_window_after_insertion = 1
@@ -343,6 +358,7 @@ let g:UltiSnipsSnippetDirectories=["Ultisnips"]
 let g:NERDCreateDefaultMappings=1
 let g:NERDCompactSexyComs=1
 let g:NERDTreeMinimalUI=0
+nnoremap <silent> <Leader>t :NERDTree<cr>
 
 "=====[ Syntastic Options ]===============================================
 let g:syntastic_check_on_open=1
@@ -389,16 +405,17 @@ let g:session_directory="~/.vim/sessions"
 "=====[ Delimitmate Options ]===============================================
 let delimitMate_expand_cr = 2
 let delimitMate_expand_space = 1
+"let delimitMate_matchpairs = "(:),[:],{:},<:>"
 imap <leader><tab> <Plug>delimitMateS-Tab
 
 "=====[ CtrlP Options ]===============================================
-let g:ctrlp_custom_ignore = {
-  \ 'dir':   '\v(\.(git|hg|svn)$|build$|debug$|release$)',
-  \ 'file':  '\v\.(so|swp|zip|a)$',
-  \ }
-nnoremap <silent> <Leader>t :CtrlP<cr>
-nnoremap <silent> <leader>T :ClearCtrlPCache<cr>\|:CtrlP<cr>
-nnoremap <leader>. :CtrlPTag<cr>
+"let g:ctrlp_custom_ignore = {
+""  \ 'dir':   '\v(\.(git|hg|svn)$|build$|debug$|release$)',
+""  \ 'file':  '\v\.(so|swp|zip|a)$',
+""  \ }
+"nnoremap <silent> <Leader>t :CtrlP<cr>
+"nnoremap <silent> <leader>T :ClearCtrlPCache<cr>\|:CtrlP<cr>
+"nnoremap <leader>. :CtrlPTag<cr>
 
 "=====[ Remove all the rubbish from gvim]====================================
 
@@ -408,6 +425,7 @@ set guioptions-=r  "remove right-hand scroll bar
 set guifont=Terminess\ Powerline "Set the GVIM font to terminus
 
 "" Get rid of the arrow keys!
+map <F3> :Autoformat<CR>
 map <up> <nop>
 map <down> <nop>
 map <left> <nop>
@@ -432,7 +450,7 @@ nmap <silent> <leader>/ :nohlsearch<CR>
 cmap w!! w !sudo tee % >/dev/null
 
 inoremap jk <esc>
-xnoremap jk <esc>
+"xnoremap jk <esc>
 
 runtime plugin/dragvisuals.vim
 vmap  <expr>  <LEFT>   DVB_Drag('left')
@@ -465,11 +483,34 @@ vnoremap <C-V>     v
 
 nmap  ;s     :set invspell spelllang=en<CR>
 
-    " To create the en-basic (or any other new) spelling list:
-    "
-    "     :mkspell  ~/.vim/spell/en-basic  basic_english_words.txt
-    "
-    " See :help mkspell
+" To create the en-basic (or any other new) spelling list:
+"
+"     :mkspell  ~/.vim/spell/en-basic  basic_english_words.txt
+"
+" See :help mkspell
+"
+
+function! MarkWindowSwap()
+    let g:markedWinNum = winnr()
+endfunction
+
+function! DoWindowSwap()
+    "Mark destination
+    let curNum = winnr()
+    let curBuf = bufnr( "%" )
+    exe g:markedWinNum . "wincmd w"
+    "Switch to source and shuffle dest->source
+    let markedBuf = bufnr( "%" )
+    "Hide and open so that we aren't prompted and keep history
+    exe 'hide buf' curBuf
+    "Switch to dest and shuffle source->dest
+    exe curNum . "wincmd w"
+    "Hide and open so that we aren't prompted and keep history
+    exe 'hide buf' markedBuf 
+endfunction
+
+nmap <silent> <leader>mw :call MarkWindowSwap()<CR>
+nmap <silent> <leader>pw :call DoWindowSwap()<CR>
 
 
 "====[ Make CTRL-K list diagraphs before each digraph entry ]===============
