@@ -38,6 +38,8 @@ set nobackup
 set noswapfile
 set noundofile
 
+set clipboard+=unnamedplus
+
 set history=1000         " remember more commands and search history
 set undolevels=1000      " use many muchos levels of undo
 set visualbell           " don't beep
@@ -48,8 +50,6 @@ set nowrap        " don't wrap lines
 set title
 set titlelen=60
 "" Update by redraw and not INS/DEL
-set ttyscroll=5
-set nottyfast
 set showcmd
 set showfulltag
 set showmatch
@@ -91,10 +91,6 @@ function! HLNext (blinktime)
   call matchdelete(ring)
   redraw
 endfunction
-"====[ Make tabs, trailing whitespace, and non-breaking spaces visible ]======
-
-exec "set listchars=tab:\uBB\uBB,trail:\uB7,nbsp:~"
-set list
 
 "====[ Always turn on syntax highlighting for diffs ]=========================
 
@@ -115,81 +111,72 @@ augroup NoSimultaneousEdits
     autocmd SwapExists * sleep 2
 augroup END
 
-"====[ Vundle! ]==============================================================
-filetype off
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+call plug#begin('~/.nvim/plugged')
 
 " Required
-Plugin 'xolox/vim-misc'
+Plug 'xolox/vim-misc'
 
 " utils
-Plugin 'gmarik/vundle'
-Plugin 'Shougo/neomru.vim'
-Plugin 'Shougo/unite.vim'
-Plugin 'Shougo/vimproc.vim'
-"Plugin 'vim-scripts/Align'
-Plugin 'Raimondi/delimitMate'
-"Plugin 'jalcine/cmake.vim'
-Plugin 'tpope/vim-ragtag'
-Plugin 'mbbill/undotree'
-Plugin 'airblade/vim-rooter'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-endwise'
-Plugin 'tpope/vim-dispatch'
-Plugin 'tpope/vim-repeat'
-Plugin 'mhinz/vim-signify'
-Plugin 'ervandew/supertab'
-Plugin 'tpope/vim-sensible.git'
-"Plugin 'godlygeek/tabular'
-Plugin 'tmux-plugins/vim-tmux'
-Plugin 'wellle/tmux-complete.vim'
-Plugin 'xolox/vim-session'
-Plugin 'Chiel92/vim-autoformat'
-Plugin 'mhinz/vim-startify'
+Plug 'gmarik/vundle'
+Plug 'Shougo/neomru.vim'
+Plug 'Shougo/unite.vim'
+Plug 'Shougo/vimproc.vim'
+"Plug 'vim-scripts/Align'
+Plug 'Raimondi/delimitMate'
+Plug 'benekastah/neomake'
+Plug 'tpope/vim-ragtag'
+Plug 'mbbill/undotree'
+Plug 'airblade/vim-rooter'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-repeat'
+Plug 'mhinz/vim-signify'
+Plug 'ervandew/supertab'
+Plug 'tpope/vim-sensible'
+"Plug 'godlygeek/tabular'
+Plug 'tmux-plugins/vim-tmux'
+Plug 'wellle/tmux-complete.vim'
+Plug 'xolox/vim-session'
+Plug 'Chiel92/vim-autoformat'
+Plug 'mhinz/vim-startify'
 
 " unite add ons
-Plugin 'tsukkee/unite-tag'
-Plugin 'yuku-t/unite-git'
-Plugin 'h1mesuke/unite-outline'
+Plug 'tsukkee/unite-tag'
+Plug 'yuku-t/unite-git'
+Plug 'h1mesuke/unite-outline'
 
 " editor add ons
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'scrooloose/nerdtree'
-Plugin 'editorconfig/editorconfig-vim'
-Plugin 'majutsushi/tagbar'
-Plugin 'bling/vim-airline'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'roman/golden-ratio'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'majutsushi/tagbar'
+Plug 'bling/vim-airline'
+Plug 'Lokaltog/powerline-fonts'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'roman/golden-ratio'
+Plug 'reedes/vim-lexical'
 
-"Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
-Plugin 'Lokaltog/powerline-fonts'
 
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
-" Plugin 'kien/ctrlp.vim'
-Plugin 'Valloric/YouCompleteMe'
-"Plugin 'Yggdroot/indentLine'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'Valloric/YouCompleteMe'
+"Plug 'Yggdroot/indentLine'
+Plug 'nathanaelkane/vim-indent-guides'
 
 " version control
-Plugin 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 
 " languages
-Plugin 'sheerun/vim-polyglot'
-Plugin 'git://git.code.sf.net/p/vim-latex/vim-latex'
-Plugin 'lambdatoast/elm.vim'
-Plugin 'petRUShka/vim-opencl'
-Plugin 'beyondmarc/glsl.vim'
-Plugin 'hail2u/vim-css3-syntax'
-Plugin 'othree/html5-syntax.vim'
-Plugin 'jelera/vim-javascript-syntax'
-Plugin 'tpope/vim-haml'
-Plugin 'jQuery'
-Plugin 'derekwyatt/vim-scala'
-Plugin 'dbakker/vim-lint'
+Plug 'sheerun/vim-polyglot'
+Plug 'lambdatoast/elm.vim'
+Plug 'petRUShka/vim-opencl'
+Plug 'beyondmarc/glsl.vim'
+Plug 'milkypostman/vim-togglelist'
 
 "Colours
-Plugin 'jnurmine/Zenburn'
+Plug 'jnurmine/Zenburn'
+call plug#end()
 
 colorscheme zenburn
 " Enable syntax highlighting
@@ -199,7 +186,7 @@ filetype plugin indent on
 
 "=====[ Unite Options ]===============================================
 let g:unite_source_history_yank_enable = 1
-let g:unite_data_directory='~/.vim/unite'
+let g:unite_data_directory='~/.nvim/unite'
 "let g:unite_enable_start_insert = 1
 let g:unite_prompt='» '
 let g:unite_source_rec_max_cache_files=5000
@@ -247,13 +234,6 @@ let g:c_gnu=0
 let g:c_no_c99=1
 let g:c_space_errors=1
 
-"=====[ cmake Options ]===============================================
-let g:cmake_build_dirs = [ "build" ]
-let g:cmake_build_type = "Debug"
-
-"=====[ Startify Options ]===============================================
-
-
 "=====[ Airline Options ]===============================================
 let g:airline_theme='zenburn'
 let g:airline_detected_modified=1
@@ -276,34 +256,28 @@ let g:airline_mode_map={
       \ 'V' : 'B'
       \ }
 
+"=====[ Neomake Options ]=================================================
+noremap <leader>m :Neomake!<cr>
+
 "=====[ UltiSnips Options ]===============================================
 let g:UltiSnipsExpandTrigger = '<tab>'
 let g:UltiSnipsJumpForwardTrigger = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 let g:UltiSnipsSnippetDirectories=["Ultisnips"]
 
-"=====[ Nerdtree Options ]===============================================
-let g:NERDCreateDefaultMappings=1
-let g:NERDCompactSexyComs=1
-let g:NERDTreeMinimalUI=0
-
-"=====[ Tagbar Options ]===============================================
-let g:tagbar_compact=0
-let g:tagbar_autoshowtag=0
-nnoremap <silent> <Leader>b :TagbarToggle<CR>
-
 "=====[ Session Options ]===============================================
 let g:session_autoload="no"
 let g:session_autosave="yes"
 let g:session_command_aliases=1
 let g:session_default_name="default"
-let g:session_directory="~/.vim/sessions"
+let g:session_directory="~/.nvim/sessions"
 
 "=====[ YouCompleteMe Options ]===============================================
 "
 nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
 let g:ycm_collect_identifiers_from_tags_files = 1
-let g:ycm_extra_conf_globlist = ['~/code/*','!~/*']
+let g:ycm_confirm_extra_conf = 0
+"let g:ycm_extra_conf_globlist = ['~/code/*','!~/*', '~/dev/co/*']
 let g:ycm_autoclose_preview_window_after_completion = 1
 " make YCM compatible with UltiSnips (using supertab)
 let g:ycm_key_list_select_completion = ['<c-j>', '<Down>']
@@ -327,8 +301,7 @@ let g:ycm_path_to_python_interpreter = '' "default ''
 let g:ycm_server_use_vim_stdout = 0 "default 0 (logging to console)
 let g:ycm_server_log_level = 'info' "default info
 
-let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'  "where to search for .ycm_extra_conf.py if not found
-let g:ycm_confirm_extra_conf = 1
+"let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'  "where to search for .ycm_extra_conf.py if not found
 
 let g:ycm_goto_buffer_command = 'same-buffer' "[ 'same-buffer', 'horizontal-split', 'vertical-split', 'new-tab' ]
 let g:ycm_filetype_whitelist = { '*': 1 }
@@ -338,14 +311,7 @@ let g:ycm_key_invoke_completion = '<C-Space>'
 let g:SuperTabDefaultCompletionType = '<c-j>'
 let g:SuperTabCrMapping = 0
 
-"=====[ UltiSnips Options ]===============================================
-let g:UltiSnipsExpandTrigger = '<tab>'
-let g:UltiSnipsJumpForwardTrigger = '<tab>'
-let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
-let g:UltiSnipsSnippetDirectories=["Ultisnips"]
-
 "=====[ Multi cursors Options ]===============================================
-
 "let g:multi_cursor_use_default_mapping=0
 "let g:multi_cursor_next_key='<C-n>'
 "let g:multi_cursor_prev_key='<C-p>'
@@ -363,53 +329,13 @@ let g:tagbar_compact=0
 let g:tagbar_autoshowtag=0
 nnoremap <silent> <Leader>tb :TagbarToggle<CR>
 
-"=====[ Session Options ]===============================================
-let g:session_autoload="no"
-let g:session_autosave="yes"
-let g:session_command_aliases=1
-let g:session_default_name="default"
-let g:session_directory="~/.vim/sessions"
-
 "=====[ Delimitmate Options ]===============================================
 let delimitMate_expand_cr = 2
 let delimitMate_expand_space = 1
 "let delimitMate_matchpairs = "(:),[:],{:},<:>"
 imap <leader><tab> <Plug>delimitMateS-Tab
 
-"=====[ CtrlP Options ]===============================================
-"let g:ctrlp_custom_ignore = {
-""  \ 'dir':   '\v(\.(git|hg|svn)$|build$|debug$|release$)',
-""  \ 'file':  '\v\.(so|swp|zip|a)$',
-""  \ }
-"nnoremap <silent> <Leader>t :CtrlP<cr>
-"nnoremap <silent> <leader>T :ClearCtrlPCache<cr>\|:CtrlP<cr>
-"nnoremap <leader>. :CtrlPTag<cr>
-
 "=====[ Remove all the rubbish from gvim]====================================
-
-set guioptions-=m  "remove menu bar
-set guioptions-=T  "remove toolbar
-set guioptions-=r  "remove right-hand scroll bar
-set guifont=Terminess\ Powerline "Set the GVIM font to terminus
-
-"" Get rid of the arrow keys!
-map <F3> :Autoformat<CR>
-map <up> <nop>
-map <down> <nop>
-map <left> <nop>
-map <right> <nop>
-
-"" This will be useful for long lines in Latex files
-nnoremap j gj
-nnoremap k gk
-nnoremap Q <nop>
-
-
-"" Easy window navigation
-"map <C-h> <C-w>h
-"map <C-j> <C-w>j
-"map <C-k> <C-w>k
-"map <C-l> <C-w>l
 set guioptions-=m  "remove menu bar
 set guioptions-=T  "remove toolbar
 set guioptions-=r  "remove right-hand scroll bar
@@ -426,7 +352,6 @@ nnoremap j gj
 nnoremap k gk
 nnoremap Q <nop>
 
-
 "" Easy window navigation
 "map <C-h> <C-w>h
 "map <C-j> <C-w>j
@@ -438,26 +363,6 @@ nmap <silent> <leader>/ :nohlsearch<CR>
 
 " Write as super user (If you accidentally opened as normal user)
 cmap w!! w !sudo tee % >/dev/null
-
-imap jk <esc>
-
-runtime plugin/dragvisuals.vim
-vmap  <expr>  <LEFT>   DVB_Drag('left')
-vmap  <expr>  <RIGHT>  DVB_Drag('right')
-vmap  <expr>  <DOWN>   DVB_Drag('down')
-vmap  <expr>  <UP>     DVB_Drag('up')
-vmap  <expr>  D        DVB_Duplicate()
-
-" Remove any introduced trailing whitespace after moving...     ##
-let g:DVB_TrimWS = 1
-
-"" Clear search with ./
-nmap <silent> <leader>/ :nohlsearch<CR>
-
-" Write as super user (If you accidentally opened as normal user)
-cmap w!! w !sudo tee % >/dev/null
-exec "set listchars=tab:\uBB\uBB,trail:\uB7,nbsp:~"
-set list
 
 inoremap jk <esc>
 
@@ -467,22 +372,18 @@ vmap  <expr>  <RIGHT>  DVB_Drag('right')
 vmap  <expr>  <DOWN>   DVB_Drag('down')
 vmap  <expr>  <UP>     DVB_Drag('up')
 vmap  <expr>  D        DVB_Duplicate()
-nnoremap  ;  :
 
 " Remove any introduced trailing whitespace after moving...     ##
 let g:DVB_TrimWS = 1
 
 "====[ Make tabs, trailing whitespace, and non-breaking spaces visible ]======
-
 exec "set listchars=tab:\uBB\uBB,trail:\uB7,nbsp:~"
 set list
 
 "====[ Swap : and ; to make colon commands easier to type ]======
-
 nnoremap  ;  :
 
 "====[ Swap v and CTRL-V, because Block mode is more useful that Visual mode "]======
-
 nnoremap    v   <C-V>
 nnoremap <C-V>     v
 
@@ -490,7 +391,6 @@ vnoremap    v   <C-V>
 vnoremap <C-V>     v
 
 "====[ Mappings to activate spell-checking alternatives ]================
-
 nmap  ;s     :set invspell spelllang=en<CR>
 
 " To create the en-basic (or any other new) spelling list:
@@ -521,15 +421,6 @@ endfunction
 
 nmap <silent> <leader>mw :call MarkWindowSwap()<CR>
 nmap <silent> <leader>pw :call DoWindowSwap()<CR>
-    " To create the en-basic (or any other new) spelling list:
-    "
-    "     :mkspell  ~/.vim/spell/en-basic  basic_english_words.txt
-    "
-    " See :help mkspell
-
-"====[ Make CTRL-K list diagraphs before each digraph entry ]===============
-
-"inoremap <expr>  <c-n>   BDG_GetDigraph() 
 
 "====[ Fix syntax highlighting for shader files ]===========================
 au BufNewFile,BufRead *.glslf,*.glslv,*.frag,*.vert,*.glsl SetGLSLFileType
