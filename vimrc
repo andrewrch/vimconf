@@ -48,8 +48,6 @@ set nowrap        " don't wrap lines
 set title
 set titlelen=60
 "" Update by redraw and not INS/DEL
-set ttyscroll=5
-set nottyfast
 set showcmd
 set showfulltag
 set showmatch
@@ -158,25 +156,20 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'majutsushi/tagbar'
-Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'roman/golden-ratio'
-
-"Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 Plugin 'Lokaltog/powerline-fonts'
 
-Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
-" Plugin 'kien/ctrlp.vim'
-Plugin 'Valloric/YouCompleteMe'
-"Plugin 'Yggdroot/indentLine'
+Plugin 'Shougo/neocomplete.vim'
 
 " version control
 Plugin 'tpope/vim-fugitive'
 
 " languages
 Plugin 'sheerun/vim-polyglot'
-Plugin 'git://git.code.sf.net/p/vim-latex/vim-latex'
 Plugin 'lambdatoast/elm.vim'
 Plugin 'petRUShka/vim-opencl'
 Plugin 'beyondmarc/glsl.vim'
