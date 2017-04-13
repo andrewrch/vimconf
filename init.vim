@@ -18,18 +18,16 @@ if has('conceal') | set conceallevel=2 concealcursor=ncv | endif
 set hidden
 "
 set ambiwidth=single
-set tabstop=2      " a tab is two spaces
+set tabstop=4      " a tab is four spaces
+set softtabstop=0 noexpandtab
 set backspace=indent,eol,start " allow backspacing over everything in insert mode
 set number         " always show line numbers
 set relativenumber " relative numbers too
-set shiftwidth=2  " number of spaces to use for autoindenting
+set shiftwidth=4  " number of spaces to use for autoindenting
 set shiftround    " use multiple of shiftwidth when indenting with '<' and '>'
 set showmatch     " set show matching parenthesis
 set ignorecase    " ignore case when searching
 set smartcase     " ignore case if search pattern is all lowercase, case-sensitive otherwise
-set expandtab
-set smarttab      " insert tabs on the start of a line according to
-"                 "    shiftwidth, not tabstop
 set hlsearch      " highlight search terms
 set incsearch     " show search matches as you type
 "
@@ -151,7 +149,8 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'majutsushi/tagbar'
-Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'Lokaltog/powerline-fonts'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'roman/golden-ratio'
@@ -377,8 +376,8 @@ vmap  <expr>  D        DVB_Duplicate()
 let g:DVB_TrimWS = 1
 
 "====[ Make tabs, trailing whitespace, and non-breaking spaces visible ]======
-exec "set listchars=tab:\uBB\uBB,trail:\uB7,nbsp:~"
-set list
+"exec "set listchars=trail:\uB7,nbsp:~"
+"set list
 
 "====[ Swap : and ; to make colon commands easier to type ]======
 nnoremap  ;  :
